@@ -17,9 +17,9 @@ lang.strings["en_GB"] = {
 List of commands used in Zapr:
     help        Displays this help screen.
     var         Reads, sets or deletes variables.
-                [name]              Read data contained in variable.
-                [name] [data]       Write data to variable.
-                [name] --delete     Delete variable.""",
+                [<name>]            Read data contained in variable.
+                [<name>] [<data>]   Write data to variable.
+                [<name>] --delete   Delete variable.""",
     "invalidCommand": "Command is invalid.",
     "invalidCommandStructure": "Command structure is invalid.",
     "setLocaleWarning": "Don't forget to set your locale! We've determined locale to be {0}, but to be sure that this is your locale, type:\n    {1} var locale {0}",
