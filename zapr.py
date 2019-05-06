@@ -22,11 +22,9 @@ VERSION = "V0.1.0"
 
 args = sys.argv
 
-# print(colours.get("lyellow") + "Zapr " + colours.get("white") + "Version")
-
-if len(args) > 1 and (args[1] == "--hide" or args[1] == "-h"):
+if (len(args) > 1 and (args[1] == "--hide" or args[1] == "-h")):
     args.pop(1)
-else:
+elif storage.read("hide") != "true":
     print(_("welcome", [colours.get("lyellow"), colours.get("white"), VERSION]))
     print(_("copyright"))
     print("")
