@@ -30,14 +30,14 @@ elif storage.read("hide") != "true":
     print("")
 
     if storage.read("locale") == None:
-        output.warning(_("setLocaleWarning", [lang.getLocale(), args[0]]))
+        output.warning(_("setLocaleWarning", [lang.getLocale()]))
         print("")
 
 if len(args) == 1:
-    print(_("help", [args[0]]))
+    print(_("help"))
 else:
     if args[1] == "help" or args[1] == "--help" or args[1] == "/?":
-        print(_("help", [args[0]]))
+        print(_("help"))
     elif args[1] == "var":
         if len(args) > 2:
             name = args[2]

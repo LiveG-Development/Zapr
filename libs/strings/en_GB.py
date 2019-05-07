@@ -12,7 +12,7 @@ import libs.lang as lang
 lang.strings["en_GB"] = {
     "welcome": "{0}Zapr{1} {2}",
     "copyright": "Copyright (C) LiveG. All Rights Reserved.",
-    "help": """usage: {0} [--hide | -h] <command> [<args>]
+    "help": """usage: zapr [--hide | -h] <command> [<args>]
 
 List of commands used in Zapr:
     help        Displays this help screen.
@@ -22,7 +22,7 @@ List of commands used in Zapr:
                 [<name>] --delete   Delete variable.""",
     "invalidCommand": "Command is invalid.",
     "invalidCommandStructure": "Command structure is invalid.",
-    "setLocaleWarning": "Don't forget to set your locale! We've determined locale to be {0}, but to be sure that this is your locale, type:\n    {1} var locale {0}",
+    "setLocaleWarning": "Don't forget to set your locale! We've determined locale to be {0}, but to be sure that this is your locale, type:\n    zapr var locale {0}",
     "varNoMatch": "No matches found for {0}.",
     "varReturn": "{0}: {1}",
     "varDeleteSuccess": "Deleted {0}.",
