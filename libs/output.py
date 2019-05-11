@@ -16,4 +16,7 @@ def warning(text):
     print(colours.get("lyellow") + "!" + colours.get("white") + " " + text)
 
 def error(text):
-    print(colours.get("red") + "X" + colours.get("white") + " " + text) 
+    print(colours.get("red") + "X" + colours.get("white") + " " + text)
+
+def action(text):
+    print(colours.get("dgrey") + "-" + colours.get("white") + " " + text)

@@ -1,0 +1,12 @@
+{
+    "package": "tech.liveg.hello",
+    "version": "0.1.0",
+    "name": {
+        "en_GB": "Hello World"
+    },
+    "description": {
+        "en_GB": "Just a test app for Zapr!"
+    },
+    "defaultLocale": "en_GB",
+    "mainScript": "script.js"
+}
