@@ -1,3 +1,5 @@
+// @import libs/dom
+
 dom.loaded(function() {
     dom.jQuery("body").css({
         "font-family": "sans-serif",

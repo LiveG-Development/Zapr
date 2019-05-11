@@ -38,6 +38,7 @@ List of commands used in Zapr:
     "buildError": "An error occurred when building the app file.",
     "buildSuccessful": "File built successfully.",
     "importLibrary": "Importing library {0} from {1}...",
+    "circularImport": "Ignored circular import of library {0}.",
     "illegalImport": "Illegal or malformed import statement: {0}",
     "unknownImport": "Unknown source for import statement: {0}"
 }

@@ -18,6 +18,8 @@ import libs.strings.en_GB
 
 _ = lang._
 
+importedLibs = []
+
 def js(content):
     initialContentLines = content.split("\n")
     finalContentLines = []
@@ -28,38 +30,43 @@ def js(content):
                 library = initialContentLines[0][11:]
                 libraryName = ""
 
-                if library.startswith("http://") or library.startswith("https://"):
-                    libraryName = library.split("/")[-1].split(".")[0]
+                if not (library in importedLibs):
+                    importedLibs.append(library)
 
-                    output.action(_("importLibrary", [libraryName, library]))
+                    if library.startswith("http://") or library.startswith("https://"):
+                        libraryName = library.split("/")[-1].split(".")[0]
 
-                    try:
-                        site = urllib.request.urlopen(library)
-                        siteData = site.read().decode("utf-8")
+                        output.action(_("importLibrary", [libraryName, library]))
 
-                        site.close()
+                        try:
+                            site = urllib.request.urlopen(library)
+                            siteData = site.read().decode("utf-8")
 
-                        finalContentLines.append(js(siteData))
-                    except:
-                        output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                            site.close()
+
+                            finalContentLines.append(js(siteData))
+                        except:
+                            output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                    else:
+                        libraryName = library.split("/")[-1]
+
+                        output.action(_("importLibrary", [libraryName, library + ".js"]))
+
+                        try:
+                            libPath = library.split("/")
+                            
+                            libPath[-1] += ".js"
+
+                            file = open(os.path.join(*libPath), "r")
+                            fileData = file.read()
+
+                            file.close()
+
+                            finalContentLines.append(js(fileData))
+                        except:
+                            output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                 else:
-                    libraryName = library.split("/")[-1]
-
-                    output.action(_("importLibrary", [libraryName, library + ".js"]))
-
-                    try:
-                        libPath = library.split("/")
-                        
-                        libPath[-1] += ".js"
-
-                        file = open(os.path.join(*libPath), "r")
-                        fileData = file.read()
-
-                        file.close()
-
-                        finalContentLines.append(js(fileData))
-                    except:
-                        output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                    output.action(_("circularImport", [library]))
             except:
                 output.warning(_("illegalImport", [initialContentLines[0][3:]]))
         else:
