@@ -3,8 +3,8 @@
     "friendlyNameShort": "Français",
     "direction": "ltr",
     "strings": {
-        "title": "My app",
-        "heading": "Hello, world!",
-        "paragraph": "This is a test of my brilliant website."
+        "title": "Mon app",
+        "heading": "Bonjour, le monde !",
+        "paragraph": "Ceci est un test de mon site brillant."
     }
 }
