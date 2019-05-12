@@ -112,102 +112,106 @@ else:
             output.error(_("invalidCommandStructure"))
             sys.exit(1)
     elif args[1] == "build":
-        if args[2] == "app":
-            output.action(_("buildDir", [os.getcwd()]))
+        if len(args) > 2:
+            if args[2] == "app":
+                output.action(_("buildDir", [os.getcwd()]))
 
-            manifest = {}
-            manifestLoads = {}
+                manifest = {}
+                manifestLoads = {}
 
-            try:
-                manifestFile = open(os.path.join(os.getcwd(), "manifest.json"), "r")
-                manifest = json.load(manifestFile)
-            except:
-                output.error(_("invalidManifest"))
-                sys.exit(1)
+                try:
+                    manifestFile = open(os.path.join(os.getcwd(), "manifest.json"), "r")
+                    manifest = json.load(manifestFile)
+                except:
+                    output.error(_("invalidManifest"))
+                    sys.exit(1)
 
-            try:
-                manifestLoads["package"] = manifest["package"]
-                manifestLoads["version"] = manifest["version"]
-                manifestLoads["name"] = manifest["name"]
-                manifestLoads["description"] = manifest["description"]
-                manifestLoads["defaultLocale"] = manifest["defaultLocale"]
-                manifestLoads["mainScript"] = manifest["mainScript"]
-            except:
-                output.error(_("invalidManifest"))
-                sys.exit(1)
+                try:
+                    manifestLoads["package"] = manifest["package"]
+                    manifestLoads["version"] = manifest["version"]
+                    manifestLoads["name"] = manifest["name"]
+                    manifestLoads["description"] = manifest["description"]
+                    manifestLoads["defaultLocale"] = manifest["defaultLocale"]
+                    manifestLoads["mainScript"] = manifest["mainScript"]
+                except:
+                    output.error(_("invalidManifest"))
+                    sys.exit(1)
 
-            try:
-                directory = os.path.join(os.getcwd(), "build")
+                try:
+                    directory = os.path.join(os.getcwd(), "build")
 
-                if not os.path.exists(directory):
-                    os.mkdir(directory)
+                    if not os.path.exists(directory):
+                        os.mkdir(directory)
 
-                infile = open(os.path.join(os.getcwd(), manifestLoads["mainScript"]), "r")
-                outfile = open(os.path.join(directory, manifestLoads["package"] + "-" + manifestLoads["version"] + ".html"), "w")
-                outtext = "<!DOCTYPE html><html><head><title>" + manifest["name"][manifestLoads["defaultLocale"]].replace("</title>", "<\/title>") + "</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui\"><script>"
-                outtext += minify.js(infile.read()).replace("</script>", "<\/script>")
-                outtext += "</script></head><body></body></html>"
+                    infile = open(os.path.join(os.getcwd(), manifestLoads["mainScript"]), "r")
+                    outfile = open(os.path.join(directory, manifestLoads["package"] + "-" + manifestLoads["version"] + ".html"), "w")
+                    outtext = "<!DOCTYPE html><html><head><title>" + manifest["name"][manifestLoads["defaultLocale"]].replace("</title>", "<\/title>") + "</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui\"><script>"
+                    outtext += minify.js(infile.read()).replace("</script>", "<\/script>")
+                    outtext += "</script></head><body></body></html>"
 
-                outfile.write(outtext)
-                outfile.close()
+                    outfile.write(outtext)
+                    outfile.close()
 
-                output.returns(_("buildSuccessful"))
-            except:
-                output.error(_("buildError"))
-                sys.exit(1)
-        elif args[2] == "static":
-            output.action(_("cleanUpBuildDir"))
+                    output.returns(_("buildSuccessful"))
+                except:
+                    output.error(_("buildError"))
+                    sys.exit(1)
+            elif args[2] == "static":
+                output.action(_("cleanUpBuildDir"))
 
-            try:
-                shutil.rmtree("build")
-            except:
-                pass
+                try:
+                    shutil.rmtree("build")
+                except:
+                    pass
 
-            output.action(_("buildDir", [os.getcwd()]))
+                output.action(_("buildDir", [os.getcwd()]))
 
-            manifest = {}
-            manifestLoads = {}
+                manifest = {}
+                manifestLoads = {}
 
-            try:
-                manifestFile = open(os.path.join(os.getcwd(), "manifest.json"), "r")
-                manifest = json.load(manifestFile)
-            except:
-                output.error(_("invalidManifest"))
-                sys.exit(1)
+                try:
+                    manifestFile = open(os.path.join(os.getcwd(), "manifest.json"), "r")
+                    manifest = json.load(manifestFile)
+                except:
+                    output.error(_("invalidManifest"))
+                    sys.exit(1)
 
-            try:
-                manifestLoads["urlFormat"] = manifest["urlFormat"]
-                manifestLoads["defaultLocale"] = manifest["defaultLocale"]
-                manifestLoads["staticFiles"] = manifest["staticFiles"]
-                manifestLoads["localeFiles"] = manifest["localeFiles"]
-                manifestLoads["rootFiles"] = manifest["rootFiles"]
-            except:
-                output.error(_("invalidManifest"))
-                sys.exit(1)
+                try:
+                    manifestLoads["urlFormat"] = manifest["urlFormat"]
+                    manifestLoads["defaultLocale"] = manifest["defaultLocale"]
+                    manifestLoads["staticFiles"] = manifest["staticFiles"]
+                    manifestLoads["localeFiles"] = manifest["localeFiles"]
+                    manifestLoads["rootFiles"] = manifest["rootFiles"]
+                except:
+                    output.error(_("invalidManifest"))
+                    sys.exit(1)
 
-            try:
-                directory = os.path.join(os.getcwd(), "build")
+                try:
+                    directory = os.path.join(os.getcwd(), "build")
 
-                if not os.path.exists(directory):
-                    os.mkdir(directory)
+                    if not os.path.exists(directory):
+                        os.mkdir(directory)
 
-                urlFormat = manifestLoads["urlFormat"]
-                defaultLocale = manifestLoads["defaultLocale"]
+                    urlFormat = manifestLoads["urlFormat"]
+                    defaultLocale = manifestLoads["defaultLocale"]
 
-                staticPath = manifestLoads["staticFiles"].split("/")
-                staticFiles = os.path.join(*staticPath)
+                    staticPath = manifestLoads["staticFiles"].split("/")
+                    staticFiles = os.path.join(*staticPath)
 
-                localePath = manifestLoads["localeFiles"].split("/")
-                localeFiles = os.path.join(*localePath)
+                    localePath = manifestLoads["localeFiles"].split("/")
+                    localeFiles = os.path.join(*localePath)
 
-                rootPath = manifestLoads["rootFiles"].split("/")
-                rootFiles = os.path.join(*rootPath)
+                    rootPath = manifestLoads["rootFiles"].split("/")
+                    rootFiles = os.path.join(*rootPath)
 
-                minify.static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, os.getcwd(), manifestLoads)
+                    minify.static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, os.getcwd(), manifestLoads)
 
-                output.returns(_("buildSuccessful"))
-            except:
-                output.error(_("buildError"))
+                    output.returns(_("buildSuccessful"))
+                except:
+                    output.error(_("buildError"))
+                    sys.exit(1)
+            else:
+                output.error(_("invalidCommandStructure"))
                 sys.exit(1)
         else:
             output.error(_("invalidCommandStructure"))
