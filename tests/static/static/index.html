@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="{{ @locale }}" dir="{{ @direction }}">
+    <head>
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/style.css">
+        <script src="script.js"></script>
+        {{ @import root/metas }}
+    </head>
+    <body>
+        {{ @import static/header }}
+        <h1>{{ heading }}</h1>
+        <p>{{ paragraph }}</p>
+    </body>
+</html>

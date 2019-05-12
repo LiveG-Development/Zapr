@@ -9,6 +9,7 @@
 
 import os
 import sys
+import shutil
 import subprocess
 import json
 
@@ -16,7 +17,7 @@ import libs.colours as colours
 import libs.storage as storage
 import libs.output as output
 import libs.lang as lang
-import libs.minify as minify
+import libs.serve as serve
 
 import libs.strings.en_GB
 
@@ -25,6 +26,8 @@ _ = lang._
 VERSION = "V0.1.0"
 
 args = sys.argv
+
+requiredInstalls = False
 
 if (len(args) > 1 and (args[1] == "--hide" or args[1] == "-h")):
     args.pop(1)
@@ -37,18 +40,43 @@ elif storage.read("hide") != "true":
         output.warning(_("setLocaleWarning", [lang.getLocale()]))
         print("")
 
-try:
-    import jsmin
-except:
-    output.action(_("installRequiredLibs"))
+# Install libraries for when they don't exist
+def installLib(name, description):
+    global requiredInstalls
 
-    returns = subprocess.call([sys.executable, "-m", "pip", "install", "jsmin"], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    requiredInstalls = True
+
+    output.action(_("installRequiredLibs", [description]))
+
+    returns = subprocess.call([sys.executable, "-m", "pip", "install", name], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 
     if returns != 0:
         output.error(_("installRequiredLibsError"))
 
         sys.exit(1)
 
+# Try importing the libraries, if not install them
+try:
+    import jsmin
+except:
+    installLib("jsmin", "JavaScript minifier")
+
+try:
+    import htmlmin
+except:
+    installLib("htmlmin", "HTML minifier")
+
+try:
+    import cssmin
+except:
+    installLib("cssmin", "CSS minifier")
+
+if requiredInstalls: print("")
+
+# Finally, import any local libraries that require the external libraries
+import libs.minify as minify
+
+# CLI section
 if len(args) == 1:
     print(_("help"))
 else:
@@ -85,7 +113,7 @@ else:
             sys.exit(1)
     elif args[1] == "build":
         if args[2] == "app":
-            output.action(_("buildingDir", [os.getcwd()]))
+            output.action(_("buildDir", [os.getcwd()]))
 
             manifest = {}
             manifestLoads = {}
@@ -127,9 +155,65 @@ else:
             except:
                 output.error(_("buildError"))
                 sys.exit(1)
+        elif args[2] == "static":
+            output.action(_("cleanUpBuildDir"))
+
+            try:
+                shutil.rmtree("build")
+            except:
+                pass
+
+            output.action(_("buildDir", [os.getcwd()]))
+
+            manifest = {}
+            manifestLoads = {}
+
+            try:
+                manifestFile = open(os.path.join(os.getcwd(), "manifest.json"), "r")
+                manifest = json.load(manifestFile)
+            except:
+                output.error(_("invalidManifest"))
+                sys.exit(1)
+
+            try:
+                manifestLoads["urlFormat"] = manifest["urlFormat"]
+                manifestLoads["defaultLocale"] = manifest["defaultLocale"]
+                manifestLoads["staticFiles"] = manifest["staticFiles"]
+                manifestLoads["localeFiles"] = manifest["localeFiles"]
+                manifestLoads["rootFiles"] = manifest["rootFiles"]
+            except:
+                output.error(_("invalidManifest"))
+                sys.exit(1)
+
+            try:
+                directory = os.path.join(os.getcwd(), "build")
+
+                if not os.path.exists(directory):
+                    os.mkdir(directory)
+
+                urlFormat = manifestLoads["urlFormat"]
+                defaultLocale = manifestLoads["defaultLocale"]
+
+                staticPath = manifestLoads["staticFiles"].split("/")
+                staticFiles = os.path.join(*staticPath)
+
+                localePath = manifestLoads["localeFiles"].split("/")
+                localeFiles = os.path.join(*localePath)
+
+                rootPath = manifestLoads["rootFiles"].split("/")
+                rootFiles = os.path.join(*rootPath)
+
+                minify.static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, os.getcwd(), manifestLoads)
+
+                output.returns(_("buildSuccessful"))
+            except:
+                output.error(_("buildError"))
+                sys.exit(1)
         else:
             output.error(_("invalidCommandStructure"))
             sys.exit(1)
+    elif args[1] == "serve":
+        serve.serve()
     else:
         output.error(_("invalidCommand"))
         sys.exit(1)

@@ -1,0 +1,10 @@
+{
+    "friendlyName": "Français (France)",
+    "friendlyNameShort": "Français",
+    "direction": "ltr",
+    "strings": {
+        "title": "My app",
+        "heading": "Hello, world!",
+        "paragraph": "This is a test of my brilliant website."
+    }
+}

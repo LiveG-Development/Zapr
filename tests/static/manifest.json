@@ -1,0 +1,7 @@
+{
+    "urlFormat": "/<locale>/<path>",
+    "defaultLocale": "en_GB",
+    "staticFiles": "static",
+    "localeFiles": "locale",
+    "rootFiles": "root"
+}
