@@ -44,5 +44,6 @@ List of commands used in Zapr:
     "unknownImport": "Unknown source for import statement: {0}",
     "buildLocale": "Building for locale {0}...",
     "doubleLanguageFile": "Double language file ignored: {0}",
-    "servingPort": "Serving port: {0}"
+    "servePort": "Serving port: {0}",
+    "serveError": "Could not serve. The `build` directoy may not exist or may have special permissions, or an internal error may have occurred."
 }

@@ -142,7 +142,7 @@ def serve():
     socketserver.TCPServer.allow_reuse_address = True
     httpSocket = socketserver.TCPServer(("", 5000), Handler)
 
-    output.returns(_("servingPort", ["127.0.0.1:5000"]))
+    output.returns(_("servePort", ["127.0.0.1:5000"]))
 
     try:
         httpSocket.serve_forever()

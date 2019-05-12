@@ -213,7 +213,11 @@ else:
             output.error(_("invalidCommandStructure"))
             sys.exit(1)
     elif args[1] == "serve":
-        serve.serve()
+        try:
+            serve.serve()
+        except:
+            output.error(_("serveError"))
+            sys.exit(1)
     else:
         output.error(_("invalidCommand"))
         sys.exit(1)
