@@ -103,7 +103,7 @@ else:
                     data = args[3]
 
                     storage.write(name, data)
-                    
+
                     output.returns(_("varWriteReturn", [name, data]))
             else:
                 output.error(_("invalidCommandStructure"))
