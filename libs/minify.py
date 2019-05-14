@@ -135,7 +135,7 @@ def js(content):
 
                             site.close()
 
-                            finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\"")
+                            finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\";")
                         except:
                             output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
                     else:
@@ -149,7 +149,7 @@ def js(content):
 
                             file.close()
 
-                            finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(fileData).decode("utf-8") + "\"")
+                            finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(fileData).decode("utf-8") + "\";")
                         except:
                             output.warning(_("unknownAsset"), [initialContentLines[0][3:]])
             except:
