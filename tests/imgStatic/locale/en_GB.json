@@ -1,0 +1,9 @@
+{
+    "friendlyName": "English (United Kingdom)",
+    "friendlyNameShort": "English",
+    "direction": "ltr",
+    "strings": {
+        "title": "Static Image Test",
+        "local": "Image sourced locally"
+    }
+}

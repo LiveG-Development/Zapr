@@ -112,12 +112,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
             else:
                 mimetype = "text/plain"
                 
-            file = open(os.path.join(*path.split("/")), "r")
+            file = open(os.path.join(*path.split("/")), "rb")
 
             self.send_response(200)
             self.send_header("Content-type", mimetype)
             self.end_headers()
-            self.wfile.write(file.read().encode("utf-8"))
+            self.wfile.write(file.read())
 
             file.close()        
         except IOError:

@@ -9,6 +9,7 @@
 
 import os
 import re
+import base64
 import json
 import jsmin
 import htmlmin
@@ -23,10 +24,13 @@ import libs.strings.en_GB
 _ = lang._
 
 importedLibs = []
+importedAssets = []
 
 def js(content):
     initialContentLines = content.split("\n")
     finalContentLines = []
+
+    finalContentLines.append("var _assets = {};")
 
     while len(initialContentLines) > 0:
         if initialContentLines[0].startswith("// @import"):
@@ -112,6 +116,44 @@ def js(content):
                         output.warning(_("unknownImport", [initialContentLines[0][3:]]))
             except:
                 output.warning(_("illegalImport", [initialContentLines[0][3:]]))
+        elif initialContentLines[0].startswith("// @asset"):
+            try:
+                asset = initialContentLines[0][10:]
+                assetName = ""
+
+                if not (asset in importedAssets):
+                    importedLibs.append(asset)
+
+                    if asset.startswith("http://") or asset.startswith("https://"):
+                        assetName = asset.split("/")[-1]
+
+                        output.action(_("importAsset", [assetName, asset]))
+
+                        try:
+                            site = urllib.request.urlopen(asset)
+                            siteData = site.read()
+
+                            site.close()
+
+                            finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\"")
+                        except:
+                            output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
+                    else:
+                        assetName = asset.split("/")[-1]
+
+                        output.action(_("importAsset", [assetName, asset]))
+
+                        try:
+                            file = open(os.path.join(*asset.split("/")), "rb")
+                            fileData = file.read()
+
+                            file.close()
+
+                            finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(fileData).decode("utf-8") + "\"")
+                        except:
+                            output.warning(_("unknownAsset"), [initialContentLines[0][3:]])
+            except:
+                output.warning(_("illegalAsset", [initialContentLines[0][3:]]))
         else:
             finalContentLines.append(initialContentLines[0])
         
@@ -203,19 +245,19 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
             os.makedirs(neededPath)
 
         for i in range(0, len(files)):
-            infile = open(os.path.join(root, files[i]), "r")
+            infile = open(os.path.join(root, files[i]), "rb")
             infileData = infile.read()
 
             infile.close()
 
-            outfile = open(os.path.join(neededPath, files[i]), "w")
+            outfile = open(os.path.join(neededPath, files[i]), "wb")
             
             if files[i].endswith(".js"):
-                outfile.write(js(infileData))
+                outfile.write(js(infileData.decode("utf-8")).encode("utf-8"))
             elif files[i].endswith(".html"):
-                outfile.write(html(infileData))
+                outfile.write(html(infileData.decode("utf-8")).encode("utf-8"))
             elif files[i].endswith(".css"):
-                outfile.write(css(infileData))
+                outfile.write(css(infileData.decode("utf-8")).encode("utf-8"))
             else:
                 outfile.write(infileData)
 
@@ -248,19 +290,19 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
                 os.makedirs(neededPath)
 
             for j in range(0, len(files)):
-                infile = open(os.path.join(root, files[j]), "r")
+                infile = open(os.path.join(root, files[j]), "rb")
                 infileData = infile.read()
 
                 infile.close()
 
-                outfile = open(os.path.join(neededPath, files[j]), "w")
+                outfile = open(os.path.join(neededPath, files[j]), "wb")
                 
                 if files[j].endswith(".js"):
-                    outfile.write(js(infileData))
+                    outfile.write(js(infileData.decode("utf-8")).encode("utf-8"))
                 elif files[j].endswith(".html"):
-                    outfile.write(translate(html(infileData), openLocaleFileData, supportedLocales[i]))
+                    outfile.write(translate(html(infileData.decode("utf-8")), openLocaleFileData, supportedLocales[i]).encode("utf-8"))
                 elif files[j].endswith(".css"):
-                    outfile.write(css(infileData))
+                    outfile.write(css(infileData.decode("utf-8")).encode("utf-8"))
                 else:
                     outfile.write(infileData)
 
