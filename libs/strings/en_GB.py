@@ -46,6 +46,7 @@ List of commands used in Zapr:
     "circularAsset": "Ignored circular import of asset {0}.",
     "illegalAsset": "Illegal or malformed asset statement: {0}",
     "unknownAsset": "Unknown source for asset statement: {0}",
+    "takenFromCache": "Taken {0} from cache.",
     "buildLocale": "Building for locale {0}...",
     "doubleLanguageFile": "Double language file ignored: {0}",
     "servePort": "Serving port: {0}",

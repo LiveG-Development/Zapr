@@ -14,10 +14,10 @@ import json
 import jsmin
 import htmlmin
 import cssmin
-import urllib.request
 
 import libs.output as output
 import libs.lang as lang
+import libs.cache as cache
 
 import libs.strings.en_GB
 
@@ -47,12 +47,12 @@ def js(content):
                         output.action(_("importLibrary", [libraryName, library]))
 
                         try:
-                            site = urllib.request.urlopen(library)
-                            siteData = site.read().decode("utf-8")
+                            siteData = cache.get(library)
 
-                            site.close()
-
-                            finalContentLines.append(js(siteData))
+                            if siteData != False:
+                                finalContentLines.append(js(siteData.decode("utf-8")))
+                            else:
+                                output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                         except:
                             output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                     else:
@@ -88,12 +88,12 @@ def js(content):
                     output.action(_("importLibrary", [libraryName, library]))
 
                     try:
-                        site = urllib.request.urlopen(library)
-                        siteData = site.read().decode("utf-8")
+                        siteData = cache.get(library)
 
-                        site.close()
-
-                        finalContentLines.append(js(siteData))
+                        if siteData != False:
+                            finalContentLines.append(js(siteData.decode("utf-8")))
+                        else:
+                            output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                     except:
                         output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                 else:
@@ -130,12 +130,12 @@ def js(content):
                         output.action(_("importAsset", [assetName, asset]))
 
                         try:
-                            site = urllib.request.urlopen(asset)
-                            siteData = site.read()
+                            siteData = cache.get(asset)
 
-                            site.close()
-
-                            finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\";")
+                            if siteData != False:
+                                finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\";")
+                            else:
+                                output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
                         except:
                             output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
                     else:
@@ -177,12 +177,12 @@ def html(content):
             output.action(_("importLibrary", [libraryName, library]))
 
             try:
-                site = urllib.request.urlopen(library)
-                siteData = site.read().decode("utf-8")
+                siteData = cache.get(library)
 
-                site.close()
-
-                minified = minified.replace(importStatement, html(siteData))
+                if siteData != False:
+                    minified = minified.replace(importStatement, html(siteData.decode("utf-8")))
+                else:
+                    output.warning(_("unknownImport", [initialContentLines[0][3:]]))
             except:
                 output.warning(_("unknownImport", [imports[i]]))
         else:
