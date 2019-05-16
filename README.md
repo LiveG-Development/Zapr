@@ -17,7 +17,8 @@ If you would like to use Zapr wherever you are in your terminal, you should add 
 ## List of useful Zapr variables
 Here's a good list of useful Zapr variables:
 
-| Name      | Description                                                                        |
-|-----------|------------------------------------------------------------------------------------|
-| hide      | Hide the Zapr notice every time you invoke Zapr (must be set to `true` to enable). |
-| locale    | Set the locale name (for example, `en_GB`).                                        |
+| Name      | Description                                                                          |
+|-----------|--------------------------------------------------------------------------------------|
+| hide      | Hide the Zapr notice every time you invoke Zapr (must be set to `true` to enable).   |
+| locale    | Set the locale name (for example, `en_GB`).                                          |
+| cache     | Enable cache storage for online imports (default `true`, set to `false` to disable). |
