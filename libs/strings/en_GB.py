@@ -24,6 +24,7 @@ List of commands used in Zapr:
                 <name> --delete     Delete variable.
     build       Build files in directory and output them to the `build` subdirectory.
                 app                 Build files as final app.
+                static              Build files as final static site.
     """,
     "invalidCommand": "Command is invalid.",
     "invalidCommandStructure": "Command structure is invalid.",
