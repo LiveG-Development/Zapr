@@ -236,7 +236,7 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
 
     locales = {}
 
-    output.action("Building root files...")
+    output.action(_("buildRootFiles"))
 
     for root, subdirs, files in os.walk(rootFiles):
         importedLibs = []

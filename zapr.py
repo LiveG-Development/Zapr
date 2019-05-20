@@ -18,6 +18,7 @@ import libs.storage as storage
 import libs.output as output
 import libs.lang as lang
 import libs.serve as serve
+import libs.docgen as docgen
 
 import libs.strings.en_GB
 
@@ -222,6 +223,15 @@ else:
         except:
             output.error(_("serveError"))
             sys.exit(1)
+    elif args[1] == "docgen":
+        output.action(_("cleanUpDocsDir"))
+
+        try:
+            shutil.rmtree("docs")
+        except:
+            pass
+            
+        docgen.generate()
     else:
         output.error(_("invalidCommand"))
         sys.exit(1)

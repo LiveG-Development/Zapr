@@ -17,14 +17,15 @@ lang.strings["en_GB"] = {
     "help": """usage: zapr [--hide | -h] <command> [<args>]
 
 List of commands used in Zapr:
-    help        Displays this help screen.
-    var         Reads, sets or deletes variables.
+    help        Display this help screen.
+    var         Read, set or delete variables.
                 <name>              Read data contained in variable.
                 <name> <data>       Write data to variable.
                 <name> --delete     Delete variable.
     build       Build files in directory and output them to the `build` subdirectory.
                 app                 Build files as final app.
                 static              Build files as final static site.
+    docgen      Generate documentation for Zapr JavaScript libraries to the `docs` subdirectory.
     """,
     "invalidCommand": "Command is invalid.",
     "invalidCommandStructure": "Command structure is invalid.",
@@ -35,6 +36,7 @@ List of commands used in Zapr:
     "varDeleteFail": "Could not delete {0}. {0} may not exist or may have special permissions.",
     "varWriteReturn": "Set {0} to {1}.\n{0}: {1}",
     "buildDir": "Building for directory {0}...",
+    "buildRootFiles": "Building root files...",
     "cleanUpBuildDir": "Cleaning up `build` directory...",
     "invalidManifest": "Could not read manifest.json. It may be invalid, may not exist or may have special permissions.",
     "buildError": "An error occurred when building the app file.",
@@ -51,5 +53,10 @@ List of commands used in Zapr:
     "buildLocale": "Building for locale {0}...",
     "doubleLanguageFile": "Double language file ignored: {0}",
     "servePort": "Serving port: {0}",
-    "serveError": "Could not serve. The `build` directoy may not exist or may have special permissions, or an internal error may have occurred."
+    "serveError": "Could not serve. The `build` directoy may not exist or may have special permissions, or an internal error may have occurred.",
+    "genDocs": "Generating documentation for {0}...",
+    "genDocsSuccessful": "Documentation generated successfully.",
+    "genDocsIllegal": "Illegal or malformed documentation statement ignored: {0}",
+    "genDocsUnspecified": "Unspecified mandatory information for documentation statement, statement ignored: {0}",
+    "cleanUpDocsDir": "Cleaning up `docs` directory..."
 }
