@@ -33,6 +33,8 @@ def js(content):
     finalContentLines.append("var _assets = {};")
 
     while len(initialContentLines) > 0:
+        initialContentLines[0] = initialContentLines[0].strip()
+
         if initialContentLines[0].startswith("// @import"):
             try:
                 library = initialContentLines[0][11:]
@@ -182,7 +184,7 @@ def html(content):
                 if siteData != False:
                     minified = minified.replace(importStatement, html(siteData.decode("utf-8")))
                 else:
-                    output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                    output.warning(_("unknownImport", ["@import " + imports[i]))
             except:
                 output.warning(_("unknownImport", [imports[i]]))
         else:
