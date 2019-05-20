@@ -184,7 +184,7 @@ def html(content):
                 if siteData != False:
                     minified = minified.replace(importStatement, html(siteData.decode("utf-8")))
                 else:
-                    output.warning(_("unknownImport", ["@import " + imports[i]))
+                    output.warning(_("unknownImport", ["@import " + imports[i]]))
             except:
                 output.warning(_("unknownImport", [imports[i]]))
         else:
