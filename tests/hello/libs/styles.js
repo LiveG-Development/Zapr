@@ -1,4 +1,4 @@
-// @import libs/dom
+// @import dom
 
 dom.loaded(function() {
     dom.jQuery("body").css({

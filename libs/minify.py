@@ -29,10 +29,12 @@ importedAssets = []
 def js(content, location):
     initialContentLines = content.split("\n")
     finalContentLines = []
+    firstLocation = location
 
     finalContentLines.append("var _assets = {};")
 
     while len(initialContentLines) > 0:
+        location = firstLocation
         initialContentLines[0] = initialContentLines[0].strip()
 
         if initialContentLines[0].startswith("// @import"):
@@ -40,8 +42,8 @@ def js(content, location):
                 library = initialContentLines[0][11:]
                 libraryName = ""
 
-                if not (library in importedLibs):
-                    importedLibs.append(library)
+                if not ((location + "/" + library) in importedLibs):
+                    importedLibs.append(location + "/" + library)
 
                     if location.startswith("http://") or location.startswith("https://"):
                         library = location + "/" + library
@@ -76,8 +78,12 @@ def js(content, location):
                         except:
                             output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                     else:
+                        oldLibrary = library
                         library = location + "/" + library
                         libraryName = library.split("/")[-1]
+
+                        if "/" in oldLibrary:
+                            location += "/" + "/".join(oldLibrary.split("/")[:-1])
 
                         output.action(_("importLibrary", [libraryName, library + ".js"]))
 
@@ -136,8 +142,12 @@ def js(content, location):
                     except:
                         output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                 else:
+                    oldLibrary = library
                     library = location + "/" + library
                     libraryName = library.split("/")[-1]
+
+                    if "/" in oldLibrary:
+                        location += "/" + "/".join(oldLibrary.split("/")[:-1])
 
                     output.action(_("importLibrary", [libraryName, library + ".js"]))
 
@@ -161,11 +171,10 @@ def js(content, location):
                 asset = initialContentLines[0][10:]
                 assetName = ""
 
-                if not (asset in importedAssets):
-                    importedLibs.append(asset)
+                if not ((location + "/" + asset) in importedAssets):
+                    importedAssets.append(location + "/" + asset)
 
                     if location.startswith("http://") or location.startswith("https://"):
-                        asset = location + "/" + asset
                         assetName = asset.split("/")[-1].split(".")[0]
 
                         output.action(_("importAsset", [assetName, asset]))
@@ -197,7 +206,11 @@ def js(content, location):
                         except:
                             output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
                     else:
+                        oldAsset = asset
                         assetName = asset.split("/")[-1]
+
+                        if "/" in asset:
+                            location += "/" + "/".join(asset.split("/")[:-1])
 
                         output.action(_("importAsset", [assetName, asset]))
 
