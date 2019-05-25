@@ -1,1 +1,1 @@
-{"another.dir": {"shortDescription": "Just testing!", "longDescription": "", "return": {}, "params": [{"name": "lol", "description": "Just to lol myself", "type": "string"}]}}
+{"another.dir": {"return": {}, "longDescription": "", "shortDescription": "Just testing!", "params": [{"type": "string", "name": "lol", "description": "Just to lol myself"}]}}

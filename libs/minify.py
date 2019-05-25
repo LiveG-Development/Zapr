@@ -26,7 +26,7 @@ _ = lang._
 importedLibs = []
 importedAssets = []
 
-def js(content):
+def js(content, location):
     initialContentLines = content.split("\n")
     finalContentLines = []
 
@@ -43,7 +43,8 @@ def js(content):
                 if not (library in importedLibs):
                     importedLibs.append(library)
 
-                    if library.startswith("http://") or library.startswith("https://"):
+                    if location.startswith("http://") or location.startswith("https://"):
+                        library = location + "/" + library
                         libraryName = library.split("/")[-1].split(".")[0]
 
                         output.action(_("importLibrary", [libraryName, library]))
@@ -52,12 +53,30 @@ def js(content):
                             siteData = cache.get(library)
 
                             if siteData != False:
-                                finalContentLines.append(js(siteData.decode("utf-8")))
+                                finalContentLines.append(js(siteData.decode("utf-8"), location))
+                            else:
+                                output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                        except:
+                            output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                    elif library.startswith("http://") or library.startswith("https://"):
+                        libraryName = library.split("/")[-1].split(".")[0]
+
+                        output.action(_("importLibrary", [libraryName, library]))
+
+                        if not (location.startswith("http://") or location.startswith("https://")):
+                            location = library[:-1]
+
+                        try:
+                            siteData = cache.get(library)
+
+                            if siteData != False:
+                                finalContentLines.append(js(siteData.decode("utf-8"), location))
                             else:
                                 output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                         except:
                             output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                     else:
+                        library = location + "/" + library
                         libraryName = library.split("/")[-1]
 
                         output.action(_("importLibrary", [libraryName, library + ".js"]))
@@ -67,12 +86,12 @@ def js(content):
                             
                             libPath[-1] += ".js"
 
-                            file = open(os.path.join(*libPath), "r")
+                            file = open(os.path.join(*["/", *libPath]), "r")
                             fileData = file.read()
 
                             file.close()
 
-                            finalContentLines.append(js(fileData))
+                            finalContentLines.append(js(fileData, location))
                         except:
                             output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                 else:
@@ -84,7 +103,8 @@ def js(content):
                 library = initialContentLines[0][12:]
                 libraryName = ""
 
-                if library.startswith("http://") or library.startswith("https://"):
+                if location.startswith("http://") or location.startswith("https://"):
+                    library = location + "/" + library
                     libraryName = library.split("/")[-1].split(".")[0]
 
                     output.action(_("importLibrary", [libraryName, library]))
@@ -93,12 +113,30 @@ def js(content):
                         siteData = cache.get(library)
 
                         if siteData != False:
-                            finalContentLines.append(js(siteData.decode("utf-8")))
+                            finalContentLines.append(js(siteData.decode("utf-8"), location))
+                        else:
+                            output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                    except:
+                        output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+                elif library.startswith("http://") or library.startswith("https://"):
+                    libraryName = library.split("/")[-1].split(".")[0]
+
+                    output.action(_("importLibrary", [libraryName, library]))
+
+                    if not (location.startswith("http://") or location.startswith("https://")):
+                        location = library[:-1]
+
+                    try:
+                        siteData = cache.get(library)
+
+                        if siteData != False:
+                            finalContentLines.append(js(siteData.decode("utf-8"), location))
                         else:
                             output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                     except:
                         output.warning(_("unknownImport", [initialContentLines[0][3:]]))
                 else:
+                    library = location + "/" + library
                     libraryName = library.split("/")[-1]
 
                     output.action(_("importLibrary", [libraryName, library + ".js"]))
@@ -108,12 +146,12 @@ def js(content):
                         
                         libPath[-1] += ".js"
 
-                        file = open(os.path.join(*libPath), "r")
+                        file = open(os.path.join(*["/", *libPath]), "r")
                         fileData = file.read()
 
                         file.close()
 
-                        finalContentLines.append(js(fileData))
+                        finalContentLines.append(js(fileData, location))
                     except:
                         output.warning(_("unknownImport", [initialContentLines[0][3:]]))
             except:
@@ -126,10 +164,28 @@ def js(content):
                 if not (asset in importedAssets):
                     importedLibs.append(asset)
 
-                    if asset.startswith("http://") or asset.startswith("https://"):
+                    if location.startswith("http://") or location.startswith("https://"):
+                        asset = location + "/" + asset
+                        assetName = asset.split("/")[-1].split(".")[0]
+
+                        output.action(_("importAsset", [assetName, asset]))
+
+                        try:
+                            siteData = cache.get(asset)
+
+                            if siteData != False:
+                                finalContentLines.append(js(siteData.decode("utf-8"), location))
+                            else:
+                                output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
+                        except:
+                            output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
+                    elif asset.startswith("http://") or asset.startswith("https://"):
                         assetName = asset.split("/")[-1]
 
                         output.action(_("importAsset", [assetName, asset]))
+
+                        if not (location.startswith("http://") or location.startswith("https://")):
+                            location = asset[:-1]
 
                         try:
                             siteData = cache.get(asset)
@@ -163,7 +219,7 @@ def js(content):
 
     return jsmin.jsmin("\n".join(finalContentLines))
 
-def html(content):
+def html(content, location):
     minified = htmlmin.minify(content)
     imports = re.findall(r"\{\{ @import (.*?) \}\}", minified)
 
@@ -173,7 +229,8 @@ def html(content):
         library = imports[i]
         libraryName = ""
 
-        if library.startswith("http://") or library.startswith("https://"):
+        if location.startswith("http://") or location.startswith("https://"):
+            library = location + "/" + library
             libraryName = library.split("/")[-1].split(".")[0]
 
             output.action(_("importLibrary", [libraryName, library]))
@@ -182,12 +239,30 @@ def html(content):
                 siteData = cache.get(library)
 
                 if siteData != False:
-                    minified = minified.replace(importStatement, html(siteData.decode("utf-8")))
+                    finalContentLines.append(js(siteData.decode("utf-8"), location))
+                else:
+                    output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+            except:
+                output.warning(_("unknownImport", [initialContentLines[0][3:]]))
+        elif library.startswith("http://") or library.startswith("https://"):
+            libraryName = library.split("/")[-1].split(".")[0]
+
+            output.action(_("importLibrary", [libraryName, library]))
+
+            if not (location.startswith("http://") or location.startswith("https://")):
+                location = library[:-1]
+
+            try:
+                siteData = cache.get(library)
+
+                if siteData != False:
+                    minified = minified.replace(importStatement, html(siteData.decode("utf-8"), location))
                 else:
                     output.warning(_("unknownImport", ["@import " + imports[i]]))
             except:
                 output.warning(_("unknownImport", [imports[i]]))
         else:
+            library = location + "/" + library
             libraryName = library.split("/")[-1]
 
             output.action(_("importLibrary", [libraryName, library + ".html"]))
@@ -197,12 +272,12 @@ def html(content):
                 
                 libPath[-1] += ".html"
 
-                file = open(os.path.join(*libPath), "r")
+                file = open(os.path.join(*["/", *libPath]), "r")
                 fileData = file.read()
 
                 file.close()
 
-                minified = minified.replace(importStatement, html(fileData))
+                minified = minified.replace(importStatement, html(fileData, location))
             except:
                 output.warning(_("unknownImport", [imports[i]]))
 
@@ -255,9 +330,9 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
             outfile = open(os.path.join(neededPath, files[i]), "wb")
             
             if files[i].endswith(".js"):
-                outfile.write(js(infileData.decode("utf-8")).encode("utf-8"))
+                outfile.write(js(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")).encode("utf-8"))
             elif files[i].endswith(".html"):
-                outfile.write(html(infileData.decode("utf-8")).encode("utf-8"))
+                outfile.write(html(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")).encode("utf-8", root.replace("\\", "/")))
             elif files[i].endswith(".css"):
                 outfile.write(css(infileData.decode("utf-8")).encode("utf-8"))
             else:
@@ -300,9 +375,9 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
                 outfile = open(os.path.join(neededPath, files[j]), "wb")
                 
                 if files[j].endswith(".js"):
-                    outfile.write(js(infileData.decode("utf-8")).encode("utf-8"))
+                    outfile.write(js(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")).encode("utf-8"))
                 elif files[j].endswith(".html"):
-                    outfile.write(translate(html(infileData.decode("utf-8")), openLocaleFileData, supportedLocales[i]).encode("utf-8"))
+                    outfile.write(translate(html(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")), openLocaleFileData, supportedLocales[i]).encode("utf-8"))
                 elif files[j].endswith(".css"):
                     outfile.write(css(infileData.decode("utf-8")).encode("utf-8"))
                 else:

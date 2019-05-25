@@ -147,7 +147,7 @@ else:
                     infile = open(os.path.join(os.getcwd(), manifestLoads["mainScript"]), "r")
                     outfile = open(os.path.join(directory, manifestLoads["package"] + "-" + manifestLoads["version"] + ".html"), "w")
                     outtext = "<!DOCTYPE html><html><head><title>" + manifest["name"][manifestLoads["defaultLocale"]].replace("</title>", "<\/title>") + "</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui\"><script>"
-                    outtext += minify.js(infile.read()).replace("</script>", "<\/script>")
+                    outtext += minify.js(infile.read(), os.getcwd().replace("\\", "/")).replace("</script>", "<\/script>")
                     outtext += "</script></head><body></body></html>"
 
                     outfile.write(outtext)
