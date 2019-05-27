@@ -319,7 +319,7 @@ def translate(content, localeFile, locale):
 
     return currentContent
 
-def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workingDir, manifest):
+def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workingDir, manifest, manifestAll):
     global importedLibs
 
     locales = {}
@@ -345,7 +345,10 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
             if files[i].endswith(".js"):
                 outfile.write(js(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")).encode("utf-8"))
             elif files[i].endswith(".html"):
-                outfile.write(html(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")).encode("utf-8", root.replace("\\", "/")))
+                outfile.write(html(
+                    "<script>var _manifest = " + json.dumps(manifestAll).replace("</script>", "<\/script>") + ";</script>" +
+                    infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")).encode("utf-8", root.replace("\\", "/")
+                ))
             elif files[i].endswith(".css"):
                 outfile.write(css(infileData.decode("utf-8")).encode("utf-8"))
             else:
@@ -390,7 +393,11 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
                 if files[j].endswith(".js"):
                     outfile.write(js(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")).encode("utf-8"))
                 elif files[j].endswith(".html"):
-                    outfile.write(translate(html(infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")), openLocaleFileData, supportedLocales[i]).encode("utf-8"))
+                    outfile.write(translate(html(
+                        "<script>var _manifest = " + json.dumps(manifestAll).replace("</script>", "<\/script>") + ";</script>" +
+                        "<script>var _locale = " + json.dumps(openLocaleFileData) + ";</script>" +
+                        infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")
+                    ), openLocaleFileData, supportedLocales[i]).encode("utf-8"))
                 elif files[j].endswith(".css"):
                     outfile.write(css(infileData.decode("utf-8")).encode("utf-8"))
                 else:

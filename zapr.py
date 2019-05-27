@@ -146,7 +146,8 @@ else:
 
                     infile = open(os.path.join(os.getcwd(), manifestLoads["mainScript"]), "r")
                     outfile = open(os.path.join(directory, manifestLoads["package"] + "-" + manifestLoads["version"] + ".html"), "w")
-                    outtext = "<!DOCTYPE html><html><head><title>" + manifest["name"][manifestLoads["defaultLocale"]].replace("</title>", "<\/title>") + "</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui\"><script>"
+                    outtext = "<!DOCTYPE html><html><head><title>" + manifest["name"][manifestLoads["defaultLocale"]].replace("</title>", "<\/title>") + "</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui\">"
+                    outtext += "<script>var _manifest = " + json.dumps(manifest).replace("</script>", "<\/script>") + ";</script><script>"
                     outtext += minify.js(infile.read(), os.getcwd().replace("\\", "/")).replace("</script>", "<\/script>")
                     outtext += "</script></head><body></body></html>"
 
@@ -205,7 +206,7 @@ else:
                     rootPath = manifestLoads["rootFiles"].split("/")
                     rootFiles = os.path.join(*rootPath)
 
-                    minify.static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, os.getcwd(), manifestLoads)
+                    minify.static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, os.getcwd(), manifestLoads, manifest)
 
                     output.returns(_("buildSuccessful"))
                 except:
