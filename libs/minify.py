@@ -299,7 +299,7 @@ def html(content, location):
 def css(content):
     return cssmin.cssmin(content)
 
-def translate(content, localeFile, locale):
+def translate(content, localeFile, defaultLocaleFile, locale):
     currentContent = content
 
     currentContent = currentContent.replace("{{ @locale }}", locale)
@@ -316,6 +316,9 @@ def translate(content, localeFile, locale):
 
     for i in range(0, len(stringKeys)):
         currentContent = currentContent.replace("{{ " + stringKeys[i] + " }}", localeFile["strings"][stringKeys[i]])
+
+    while re.search(r"{{ (.*?) }}", currentContent) != None:
+        currentContent = currentContent.replace("{{ " + re.search(r"{{ (.*?) }}", currentContent).group(1) + " }}", defaultLocaleFile["strings"][re.search(r"{{ (.*?) }}", currentContent).group(1)])
 
     return currentContent
 
@@ -373,6 +376,11 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
 
         openLocaleFile.close()
 
+        openDefaultLocaleFile = open(locales[manifest["defaultLocale"]], "r")
+        openDefaultLocaleFileData = json.load(openDefaultLocaleFile)
+
+        openDefaultLocaleFile.close()
+
         for root, subdirs, files in os.walk(staticFiles):
             importedLibs = []
 
@@ -397,7 +405,7 @@ def static(urlFormat, defaultLocale, staticFiles, localeFiles, rootFiles, workin
                         "<script>var _manifest = " + json.dumps(manifestAll).replace("</script>", "<\/script>") + ";</script>" +
                         "<script>var _locale = " + json.dumps(openLocaleFileData) + ";</script>" +
                         infileData.decode("utf-8"), os.getcwd().replace("\\", "/") + "/" + root.replace("\\", "/")
-                    ), openLocaleFileData, supportedLocales[i]).encode("utf-8"))
+                    ), openLocaleFileData, openDefaultLocaleFileData, supportedLocales[i]).encode("utf-8"))
                 elif files[j].endswith(".css"):
                     outfile.write(css(infileData.decode("utf-8")).encode("utf-8"))
                 else:
