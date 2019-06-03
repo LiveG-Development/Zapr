@@ -14,6 +14,7 @@ import json
 import jsmin
 import htmlmin
 import cssmin
+import urllib.parse
 
 import libs.output as output
 import libs.lang as lang
@@ -25,6 +26,12 @@ _ = lang._
 
 importedLibs = []
 importedAssets = []
+
+def _replaceExceptFirst(string, sample, replacement):
+    count = replacement.count(sample) - 1
+    occs = string.rsplit(sample, count)
+
+    return sample.join(occs)
 
 def js(content, location):
     initialContentLines = content.split("\n")
@@ -49,10 +56,15 @@ def js(content, location):
                         library = location + "/" + library
                         libraryName = library.split("/")[-1].split(".")[0]
 
-                        output.action(_("importLibrary", [libraryName, library]))
+                        finalURL = urllib.parse.urljoin(library, ".") + library.split("/")[-1]
+
+                        if not finalURL.endswith(".js"):
+                            finalURL += ".js"
+
+                        output.action(_("importLibrary", [libraryName, finalURL]))
 
                         try:
-                            siteData = cache.get(library)
+                            siteData = cache.get(finalURL)
 
                             if siteData != False:
                                 finalContentLines.append(js(siteData.decode("utf-8"), location))
@@ -66,7 +78,10 @@ def js(content, location):
                         output.action(_("importLibrary", [libraryName, library]))
 
                         if not (location.startswith("http://") or location.startswith("https://")):
-                            location = library[:-1]
+                            location = urllib.parse.urljoin("/".join(_replaceExceptFirst(library, "//", "/").split("/")), ".").rstrip("/")
+                        
+                        if not library.endswith(".js"):
+                            library += ".js"
 
                         try:
                             siteData = cache.get(library)
@@ -113,10 +128,15 @@ def js(content, location):
                     library = location + "/" + library
                     libraryName = library.split("/")[-1].split(".")[0]
 
-                    output.action(_("importLibrary", [libraryName, library]))
+                    finalURL = urllib.parse.urljoin(library, ".") + library.split("/")[-1]
+
+                    if not finalURL.endswith(".js"):
+                        finalURL += ".js"
+
+                    output.action(_("importLibrary", [libraryName, finalURL]))
 
                     try:
-                        siteData = cache.get(library)
+                        siteData = cache.get(finalURL)
 
                         if siteData != False:
                             finalContentLines.append(js(siteData.decode("utf-8"), location))
@@ -130,7 +150,10 @@ def js(content, location):
                     output.action(_("importLibrary", [libraryName, library]))
 
                     if not (location.startswith("http://") or location.startswith("https://")):
-                        location = library[:-1]
+                        location = urllib.parse.urljoin("/".join(_replaceExceptFirst(library, "//", "/").split("/")), ".").rstrip("/")
+                        
+                        if not library.endswith(".js"):
+                            library += ".js"
 
                     try:
                         siteData = cache.get(library)
@@ -194,7 +217,7 @@ def js(content, location):
                         output.action(_("importAsset", [assetName, asset]))
 
                         if not (location.startswith("http://") or location.startswith("https://")):
-                            location = asset[:-1]
+                            location = urllib.parse.urljoin("/".join(_replaceExceptFirst(asset, "//", "/").split("/")), ".").rstrip("/")
 
                         try:
                             siteData = cache.get(asset)
@@ -246,10 +269,15 @@ def html(content, location):
             library = location + "/" + library
             libraryName = library.split("/")[-1].split(".")[0]
 
-            output.action(_("importLibrary", [libraryName, library]))
+            finalURL = urllib.parse.urljoin(library, ".") + library.split("/")[-1]
+
+            if not finalURL.endswith(".html"):
+                finalURL += ".html"
+
+            output.action(_("importLibrary", [libraryName, finalURL]))
 
             try:
-                siteData = cache.get(library)
+                siteData = cache.get(finalURL)
 
                 if siteData != False:
                     finalContentLines.append(js(siteData.decode("utf-8"), location))
@@ -263,7 +291,10 @@ def html(content, location):
             output.action(_("importLibrary", [libraryName, library]))
 
             if not (location.startswith("http://") or location.startswith("https://")):
-                location = library[:-1]
+                location = urllib.parse.urljoin("/".join(_replaceExceptFirst(library, "//", "/").split("/")), ".").rstrip("/")
+            
+                if not library.endswith(".html"):
+                    library += ".html"
 
             try:
                 siteData = cache.get(library)
