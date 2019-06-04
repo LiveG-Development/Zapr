@@ -35,6 +35,7 @@ List of commands used in Zapr:
     "varDeleteSuccess": "Deleted {0}.",
     "varDeleteFail": "Could not delete {0}. {0} may not exist or may have special permissions.",
     "varWriteReturn": "Set {0} to {1}.\n{0}: {1}",
+    "varError": "Could not perform action. Check that the variable in use isn't reserved.",
     "buildDir": "Building for directory {0}...",
     "buildRootFiles": "Building root files...",
     "cleanUpBuildDir": "Cleaning up `build` directory...",

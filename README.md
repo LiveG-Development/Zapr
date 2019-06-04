@@ -21,4 +21,4 @@ Here's a good list of useful Zapr variables:
 |-----------|--------------------------------------------------------------------------------------|
 | hide      | Hide the Zapr notice every time you invoke Zapr (must be set to `true` to enable).   |
 | locale    | Set the locale name (for example, `en_GB`).                                          |
-| cache     | Enable cache storage for online imports (default `true`, set to `false` to disable). |
+| useCache  | Enable cache storage for online imports (default `true`, set to `false` to disable). |

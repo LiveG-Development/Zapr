@@ -29,7 +29,7 @@ if not os.path.exists(cacheDirectory):
     os.mkdir(cacheDirectory)
 
 def get(item):
-    if storage.read("cache") != "false":
+    if storage.read("useCache") != "false":
         itemName = item.replace("/", "-").replace(":", "-").replace(".", "-")
 
         try:

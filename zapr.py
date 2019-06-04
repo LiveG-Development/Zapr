@@ -84,33 +84,37 @@ else:
     if args[1] == "help" or args[1] == "--help" or args[1] == "/?":
         print(_("help"))
     elif args[1] == "var":
-        if len(args) > 2:
-            name = args[2]
+        try:
+            if len(args) > 2:
+                name = args[2]
 
-            if len(args) == 3:
-                if storage.read(name) == None:
-                    output.error(_("varNoMatch", [name]))
-                    sys.exit(1)
-                else:
-                    output.returns(_("varReturn", [name, storage.read(name)]))
-            elif len(args) == 4:
-                if args[3] == "--delete":
-                    if storage.delete(name):
-                        output.returns(_("varDeleteSuccess", [name]))
-                    else:
-                        output.error(_("varDeleteFail", [name]))
+                if len(args) == 3:
+                    if storage.read(name) == None:
+                        output.error(_("varNoMatch", [name]))
                         sys.exit(1)
+                    else:
+                        output.returns(_("varReturn", [name, storage.read(name)]))
+                elif len(args) == 4:
+                    if args[3] == "--delete":
+                        if storage.delete(name):
+                            output.returns(_("varDeleteSuccess", [name]))
+                        else:
+                            output.error(_("varDeleteFail", [name]))
+                            sys.exit(1)
+                    else:
+                        data = args[3]
+
+                        storage.write(name, data)
+
+                        output.returns(_("varWriteReturn", [name, data]))
                 else:
-                    data = args[3]
-
-                    storage.write(name, data)
-
-                    output.returns(_("varWriteReturn", [name, data]))
+                    output.error(_("invalidCommandStructure"))
+                    sys.exit(1)
             else:
                 output.error(_("invalidCommandStructure"))
                 sys.exit(1)
-        else:
-            output.error(_("invalidCommandStructure"))
+        except:
+            output.error(_("varError"))
             sys.exit(1)
     elif args[1] == "build":
         if len(args) > 2:
