@@ -194,6 +194,10 @@ def js(content, location):
                 asset = initialContentLines[0][10:]
                 assetName = ""
 
+                location = urllib.parse.urljoin(location, ".").rstrip("/")
+
+                initPath = asset.split("/")[:-1]
+
                 if not ((location + "/" + asset) in importedAssets):
                     importedAssets.append(location + "/" + asset)
 
@@ -238,14 +242,16 @@ def js(content, location):
                         output.action(_("importAsset", [assetName, asset]))
 
                         try:
-                            file = open(os.path.join(*asset.split("/")), "rb")
+                            asset = asset.split("/")[-1]
+
+                            file = open("/" + os.path.join(*(location + "/" + asset).split("/")), "rb")
                             fileData = file.read()
 
                             file.close()
 
                             finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(fileData).decode("utf-8") + "\";")
                         except:
-                            output.warning(_("unknownAsset"), [initialContentLines[0][3:]])
+                            output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
             except:
                 output.warning(_("illegalAsset", [initialContentLines[0][3:]]))
         else:
