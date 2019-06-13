@@ -194,12 +194,12 @@ def js(content, location):
                 asset = initialContentLines[0][10:]
                 assetName = ""
 
-                location = urllib.parse.urljoin(location, ".").rstrip("/")
-
                 initPath = asset.split("/")[:-1]
 
-                if not ((location + "/" + asset) in importedAssets):
-                    importedAssets.append(location + "/" + asset)
+                fullPath = urllib.parse.urljoin(location + "/", ".") + asset
+
+                if not (fullPath in importedAssets):
+                    importedAssets.append(fullPath)
 
                     if location.startswith("http://") or location.startswith("https://"):
                         assetName = asset.split("/")[-1].split(".")[0]
@@ -220,14 +220,11 @@ def js(content, location):
 
                         output.action(_("importAsset", [assetName, asset]))
 
-                        if not (location.startswith("http://") or location.startswith("https://")):
-                            location = urllib.parse.urljoin("/".join(_replaceExceptFirst(asset, "//", "/").split("/")), ".").rstrip("/")
-
                         try:
                             siteData = cache.get(asset)
 
                             if siteData != False:
-                                finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\";")
+                                finalContentLines.append("_assets[\"" + asset.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\";")
                             else:
                                 output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
                         except:
@@ -244,13 +241,13 @@ def js(content, location):
                         try:
                             asset = asset.split("/")[-1]
 
-                            file = open("/" + os.path.join(*(location + "/" + asset).split("/")), "rb")
+                            file = open(os.sep + os.path.join(*fullPath.split("/")), "rb")
                             fileData = file.read()
 
                             file.close()
 
                             finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(fileData).decode("utf-8") + "\";")
-                        except:
+                        except Exception as e:
                             output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
             except:
                 output.warning(_("illegalAsset", [initialContentLines[0][3:]]))
