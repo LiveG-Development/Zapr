@@ -93,7 +93,7 @@ mimeTypeMatch = {
 
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        path = self.path
+        path = self.path.split("?")[0]
         
         if "." not in path:
             if path.endswith("/"):
