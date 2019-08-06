@@ -107,7 +107,7 @@ def js(content, location):
                             
                             libPath[-1] += ".js"
 
-                            file = open(os.path.join(*["/", *libPath]), "r")
+                            file = open(os.path.join(*[os.sep, *libPath]).replace(":", ":\\"), "r")
                             fileData = file.read()
 
                             file.close()
@@ -179,7 +179,7 @@ def js(content, location):
                         
                         libPath[-1] += ".js"
 
-                        file = open(os.path.join(*["/", *libPath]), "r")
+                        file = open(os.path.join(*["/", *libPath]).replace(":", ":\\"), "r")
                         fileData = file.read()
 
                         file.close()
@@ -196,7 +196,10 @@ def js(content, location):
 
                 initPath = asset.split("/")[:-1]
 
-                fullPath = urllib.parse.urljoin(location + "/", ".") + asset
+                if os.name == "nt":
+                    fullPath = os.path.join(location.replace("/", "\\"), asset)
+                else:
+                    fullPath = urllib.parse.urljoin(location + "/", ".") + asset
 
                 if not (fullPath in importedAssets):
                     importedAssets.append(fullPath)
@@ -241,13 +244,13 @@ def js(content, location):
                         try:
                             asset = asset.split("/")[-1]
 
-                            file = open(os.sep + os.path.join(*fullPath.split("/")), "rb")
+                            file = open(fullPath, "rb")
                             fileData = file.read()
 
                             file.close()
 
                             finalContentLines.append("_assets[\"" + assetName.replace("\"", "-") + "\"] = \"" + base64.b64encode(fileData).decode("utf-8") + "\";")
-                        except Exception as e:
+                        except:
                             output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
             except:
                 output.warning(_("illegalAsset", [initialContentLines[0][3:]]))
@@ -319,7 +322,7 @@ def html(content, location):
                 
                 libPath[-1] += ".html"
 
-                file = open(os.path.join(*["/", *libPath]), "r")
+                file = open(os.path.join(*["/", *libPath]).replace(":", ":\\"), "r")
                 fileData = file.read()
 
                 file.close()
