@@ -53,7 +53,9 @@ def js(content, location):
                     importedLibs.append(location + "/" + library)
 
                     if location.startswith("http://") or location.startswith("https://"):
-                        library = location + "/" + library
+                        if not (library.startswith("http://") or library.startswith("https://")):
+                            library = location + "/" + library
+                        
                         libraryName = library.split("/")[-1].split(".")[0]
 
                         finalURL = urllib.parse.urljoin(library, ".") + library.split("/")[-1]
@@ -62,6 +64,8 @@ def js(content, location):
                             finalURL += ".js"
 
                         output.action(_("importLibrary", [libraryName, finalURL]))
+
+                        location = urllib.parse.urljoin("/".join(_replaceExceptFirst(library, "//", "/").split("/")), ".").rstrip("/")
 
                         try:
                             siteData = cache.get(finalURL)
@@ -125,7 +129,9 @@ def js(content, location):
                 libraryName = ""
 
                 if location.startswith("http://") or location.startswith("https://"):
-                    library = location + "/" + library
+                    if not (library.startswith("http://") or library.startswith("https://")):
+                        library = location + "/" + library
+
                     libraryName = library.split("/")[-1].split(".")[0]
 
                     finalURL = urllib.parse.urljoin(library, ".") + library.split("/")[-1]
@@ -134,6 +140,8 @@ def js(content, location):
                         finalURL += ".js"
 
                     output.action(_("importLibrary", [libraryName, finalURL]))
+
+                    location = urllib.parse.urljoin("/".join(_replaceExceptFirst(library, "//", "/").split("/")), ".").rstrip("/")
 
                     try:
                         siteData = cache.get(finalURL)
@@ -205,15 +213,22 @@ def js(content, location):
                     importedAssets.append(fullPath)
 
                     if location.startswith("http://") or location.startswith("https://"):
+                        originalAsset = asset
+
+                        if not (asset.startswith("http://") or asset.startswith("https://")):
+                            asset = location + "/" + asset
+
                         assetName = asset.split("/")[-1].split(".")[0]
 
                         output.action(_("importAsset", [assetName, asset]))
+
+                        location = urllib.parse.urljoin("/".join(_replaceExceptFirst(library, "//", "/").split("/")), ".").rstrip("/")
 
                         try:
                             siteData = cache.get(asset)
 
                             if siteData != False:
-                                finalContentLines.append(js(siteData.decode("utf-8"), location))
+                                finalContentLines.append("_assets[\"" + originalAsset.replace("\"", "-") + "\"] = \"" + base64.b64encode(siteData).decode("utf-8") + "\";")
                             else:
                                 output.warning(_("unknownAsset", [initialContentLines[0][3:]]))
                         except:
@@ -281,6 +296,8 @@ def html(content, location):
                 finalURL += ".html"
 
             output.action(_("importLibrary", [libraryName, finalURL]))
+
+            location = urllib.parse.urljoin("/".join(_replaceExceptFirst(library, "//", "/").split("/")), ".").rstrip("/")
 
             try:
                 siteData = cache.get(finalURL)
