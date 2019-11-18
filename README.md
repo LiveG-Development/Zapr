@@ -16,7 +16,7 @@ If you would like to use Zapr wherever you are in your terminal, you should add 
     Where of course `/path/to/zapr` is the directory path which Zapr is contained in (and not the actual `zapr` file).
 3. Logout and in again (or just open up a new terminal session), and use zapr by just typing `zapr`!
 
-## Available comamnds and features
+## Available commands and features
 Below is a list of commands that you can use in Zapr, and the features that they bring.
 
 ### `--hide` (argument)
