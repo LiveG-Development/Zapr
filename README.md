@@ -16,6 +16,13 @@ If you would like to use Zapr wherever you are in your terminal, you should add 
     Where of course `/path/to/zapr` is the directory path which Zapr is contained in (and not the actual `zapr` file).
 3. Logout and in again (or just open up a new terminal session), and use zapr by just typing `zapr`!
 
+## Multi-OS support
+Zapr works for Windows and macOS as well as Linux, though this functionality is experimental and is prone to breakage.
+
+For Windows users, we currently don't give instructions as to how to integrate Zapr into your terminal due to the odd nature of Command Prompt, but if you have managed to get Zapr running, please edit this document to include the instructions you carried out!
+
+For macOS users, Bash is included as default with the OS and is available in the Terminal app. You should be able to follow the instructions in the section entitled [Add to PATh in Bash](README.md#add-to-path-in-bash).
+
 ## Available commands and features
 Below is a list of commands that you can use in Zapr, and the features that they bring.
 
