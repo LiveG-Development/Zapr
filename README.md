@@ -112,7 +112,7 @@ Below is the templates for `manifest.json` files which are required for building
 > **Note:** With this manifest, you'll need 3 subdirectories to build the static site: `static`, `locale` and `root`.
 
 ## Locale template
-The locale template shown here is primarily made for static sites, but is also compatible with the `l10n` Zapr library.
+The locale template shown here is primarily made for static sites, but is also compatible with the [`l10n`](https://opensource.liveg.tech/ZaprCoreLibs/src/l10n/l10n.js) Zapr library.
 
 ```json
 {
