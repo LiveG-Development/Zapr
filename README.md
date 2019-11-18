@@ -21,7 +21,7 @@ Zapr works for Windows and macOS as well as Linux, though this functionality is 
 
 For Windows users, we currently don't give instructions as to how to integrate Zapr into your terminal due to the odd nature of Command Prompt, but if you have managed to get Zapr running, please edit this document to include the instructions you carried out!
 
-For macOS users, Bash is included as default with the OS and is available in the Terminal app. You should be able to follow the instructions in the section entitled [Add to PATh in Bash](README.md#add-to-path-in-bash).
+For macOS users, Bash is included as default with the OS and is available in the Terminal app. You should be able to follow the instructions in the section entitled [Add to PATH in Bash](https://github.com/LiveG-Development/Zapr#add-to-path-in-bash).
 
 ## Available commands and features
 Below is a list of commands that you can use in Zapr, and the features that they bring.
