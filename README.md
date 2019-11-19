@@ -48,7 +48,7 @@ var         Read, set or delete variables.
             <name> --delete     Delete variable.
 ```
 
-Read, set or delete variables stored for usage with Zapr. Please see [List of useful Zapr variables](https://github.com/LiveG-Development/Zapr#list-of-useful-zapr-variables) for a list of useful variables and their descriptions.
+Read, set or delete variables stored for usage with Zapr. Please see [List of Zapr variables](https://github.com/LiveG-Development/Zapr#list-of-zapr-variables) for a list of variables and their descriptions.
 
 Variables are stored as plain files in `~/.zaprset`, along with the `cache` folder.
 
@@ -68,8 +68,8 @@ docgen      Generate documentation for Zapr JavaScript libraries to the `docs` s
 
 Generate documentation for Zapr JavaScript libraries stored in the current directory and subdirectories. The generated documentation will be stored as JSON files in the `docs` subdirectory.
 
-## List of useful Zapr variables
-Here's a good list of useful Zapr variables:
+## List of Zapr variables
+Here's a good list of Zapr variables:
 
 | Name       | Description                                                                          |
 |------------|--------------------------------------------------------------------------------------|
