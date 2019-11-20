@@ -69,7 +69,7 @@ docgen      Generate documentation for Zapr JavaScript libraries to the `docs` s
 Generate documentation for Zapr JavaScript libraries stored in the current directory and subdirectories. The generated documentation will be stored as JSON files in the `docs` subdirectory.
 
 ## List of Zapr variables
-Here's a good list of Zapr variables:
+Here's a list of Zapr variables that you can use with the [`var` command](https://github.com/LiveG-Development/Zapr#var):
 
 | Name       | Description                                                                          |
 |------------|--------------------------------------------------------------------------------------|
