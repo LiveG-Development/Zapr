@@ -14,7 +14,7 @@ If you would like to use Zapr wherever you are in your terminal, you should add 
     export PATH="$PATH:/path/to/zapr"
     ```
     Where of course `/path/to/zapr` is the directory path which Zapr is contained in (and not the actual `zapr` file).
-3. Logout and in again (or just open up a new terminal session), and use zapr by just typing `zapr`!
+3. Logout and in again (or just open up a new terminal session), and use Zapr by just typing `zapr`!
 
 ## Multi-OS support
 Zapr works for Windows and macOS as well as Linux, though this functionality is experimental and is prone to breakage.
