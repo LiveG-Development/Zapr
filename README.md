@@ -78,7 +78,7 @@ Here's a list of Zapr variables that you can use with the [`var` command](https:
 | `useCache` | Enable cache storage for online imports (default `true`, set to `false` to disable). |
 
 ## Manifest templates
-Below is the templates for `manifest.json` files which are required for building your Zapr project.
+Below are the templates for `manifest.json` files which are required for building your Zapr project.
 
 ### App
 ```json
