@@ -27,7 +27,7 @@ For macOS users, Bash is included as default with the OS and is available in the
 Below is a list of commands that you can use in Zapr, and the features that they bring.
 
 ### `--hide` (argument)
-temporarily hide the header that appears when a Zapr command is run. This can be automated by setting the `hide` variable to `true`.
+Temporarily hide the header that appears when a Zapr command is run. This can be automated by setting the `hide` variable to `true`.
 
 Aliases: `-h`
 
