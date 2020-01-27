@@ -5,8 +5,8 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 
 Zapr is a command-line tool that allows you to easily, effectively and efficiently build, compile and minify HTML, CSS and JavaScript-made apps and sites. Making apps can be done with just JavaScript, and allows you to easily import libraries designed for Zapr. The built app will be available as a single compressed HTML file, holding all of the code and assets needed to be supported as a standalone file. Making sites can be done with HTML, and optionally CSS and JavaScript. HTML files can be constructed similarly to that of JavaScript files, allowing you to import other HTML files directly. Localisation support is also built-in for static sites.
 
-## Add to PATH in Bash
-If you would like to use Zapr wherever you are in your terminal, you should add Zapr to your PATH:
+## Add to PATH in Bash (for gDesk OS, Linux and macOS)
+If you would like to use Zapr wherever you are in your Bash terminal, you should add Zapr to your PATH:
 
 1. Open up the file at `~/.bashrc` in your favourite text editor.
 2. Right at the very bottom, add:
@@ -16,12 +16,19 @@ If you would like to use Zapr wherever you are in your terminal, you should add 
     Where of course `/path/to/zapr` is the directory path which Zapr is contained in (and not the actual `zapr` file).
 3. Logout and in again (or just open up a new terminal session), and use Zapr by just typing `zapr`!
 
-## Multi-OS support
-Zapr works for Windows and macOS as well as Linux, though this functionality is experimental and is prone to breakage.
+## Add to PATH in Command Prompt (for Windows)
+If you would like to use Zapr wherever you are in Command Prompt, you should add Zapr to your PATH:
 
-For Windows users, we currently don't give instructions as to how to integrate Zapr into your terminal due to the odd nature of Command Prompt, but if you have managed to get Zapr running, please edit this document to include the instructions you carried out!
+1. Type in Command Prompt:
+    ```batch
+    setx PATH "%PATH%;C:\path\to\zapr"
+    ```
+    Where of course `\path\to\zapr` is the directory path which Zapr is contained in (and not the actual `zapr.bat` file).
+2. Use Zapr by just typing `zapr`!
 
-For macOS users, Bash is included as default with the OS and is available in the Terminal app. You should be able to follow the instructions in the section entitled [Add to PATH in Bash](https://github.com/LiveG-Development/Zapr#add-to-path-in-bash).
+> **Note:** You may need to edit your registry at `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment` with the `Path` value in the same way to overcome the 1,024 character limit. If you don't get a warning about this character limit, you won't have to do this! You may need to restart your computer for this to take effect.
+
+> **Note:** It may be required for you to enable console colours so that Zapr can be displayed nicely. To do this, edit your registry at `HKEY_CURRENT_USER\Console` with the `VirtualTerminalLevel` (you may need to create the value as a `DWORD`) set to `1`. You may need to restart your computer (or just open a new Command Prompt session) for this to take effect.
 
 ## Available commands and features
 Below is a list of commands that you can use in Zapr, and the features that they bring.
