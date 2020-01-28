@@ -5,6 +5,10 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 
 Zapr is a command-line tool that allows you to easily, effectively and efficiently build, compile and minify HTML, CSS and JavaScript-made apps and sites. Making apps can be done with just JavaScript, and allows you to easily import libraries designed for Zapr. The built app will be available as a single compressed HTML file, holding all of the code and assets needed to be supported as a standalone file. Making sites can be done with HTML, and optionally CSS and JavaScript. HTML files can be constructed similarly to that of JavaScript files, allowing you to import other HTML files directly. Localisation support is also built-in for static sites.
 
+## Prerequisites
+In order to use (and contribute to) Zapr, you'll need the following installed:
+* [Python 3](https://www.python.org/downloads)
+
 ## Add to PATH in Bash (for gDesk OS, Linux and macOS)
 If you would like to use Zapr wherever you are in your Bash terminal, you should add Zapr to your PATH:
 
