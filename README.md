@@ -8,6 +8,7 @@ Zapr is a command-line tool that allows you to easily, effectively and efficient
 ## Prerequisites
 In order to use (and contribute to) Zapr, you'll need the following installed:
 * [Python 3](https://www.python.org/downloads)
+* [PIP](https://pypi.org/project/pip/) (can be installed on Linux with the `python3-pip` package)
 
 ## Add to PATH in Bash (for gDesk OS, Linux and macOS)
 If you would like to use Zapr wherever you are in your Bash terminal, you should add Zapr to your PATH:
